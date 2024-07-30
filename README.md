@@ -13,4 +13,6 @@ ollama run llama3
 
 ## Libraries Install 
 pip install rich langchain-community
+pip install python-dotenv
+
 
