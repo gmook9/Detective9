@@ -44,7 +44,7 @@ class DetectiveGame:
     def ask_question(self):
         self.console.print("[bold blue]Question Type:[/bold blue]")
         self.console.print("1. Type my own")
-        self.console.print("2. AI-generated")
+        self.console.print("2. Random")
         choice = input("Enter your choice (1/2): ").strip()
         
         if choice == "1":
