@@ -11,12 +11,23 @@ class AIBot:
         self.llm = Ollama(model="llama3")
         self.role = choice(["guilty", "innocent"])
         self.prompt = os.getenv("PROMPT")
+        self.conversation_history = []  # Store previous questions and answers
 
     def generate_synopsis(self):
         return self.llm.invoke(self.prompt)
 
     def respond(self, question):
-        return self.llm.invoke(f"Role: {self.role}. Question: {question}")
+        self.conversation_history.append(f"Question: {question}") # Add question to convo history
+        context = "\n".join(self.conversation_history)
+        response_prompt = (
+            f"Role: {self.role}. You are being questioned. "
+            f"Here is the context so far:\n{context}\n\n"
+            f"Now respond to the latest question: {question}"
+        )
+        response = self.llm.invoke(response_prompt) # Get AI Response
+        self.conversation_history.append(f"Response: {response}") # Add response to convo history
+        
+        return response
 
     def is_guilty(self):
         return self.role == "guilty"
