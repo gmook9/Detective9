@@ -9,6 +9,7 @@ class DetectiveGame:
         self.ai_bot = AIBot()
         self.max_questions = 9
         self.questions_asked = 0
+        self.exit_game = False  # Flag to track if the game is exited
 
     def start(self):
         self.console.print("[bold green]Welcome, Detective![/bold green]")
@@ -17,16 +18,19 @@ class DetectiveGame:
         self.console.print(Panel(synopsis, title="Case Synopsis"))
         self.console.print()  # Add space
         
-        while self.questions_asked < self.max_questions:
+        while self.questions_asked < self.max_questions and not self.exit_game:
             action = self.select_action()
             if action == "Ask a question":
                 self.ask_question()
             elif action == "Make a final decision":
                 self.make_final_decision()
             elif action == "Exit":
+                self.exit_game = True
                 break
-        self.console.print()  # Add space
-        self.console.print("[bold red]Game over! You've used all your questions.[/bold red]")
+        
+        if not self.exit_game:
+            self.console.print()  # Add space
+            self.console.print("[bold red]Game over! You've used all your questions.[/bold red]")
 
     def select_action(self):
         self.console.print("[bold blue]Select an action:[/bold blue]")
