@@ -20,3 +20,12 @@ class AIBot:
 
     def is_guilty(self):
         return self.role == "guilty"
+
+    def generate_random_question(self):
+        question_prompt = (
+            "Generate a detective-style question related to a crime investigation, similar to these examples: "
+            "\"Where were you on the night of the crime?\", "
+            "\"Do you have an alibi?\", "
+            "\"Why were you near the crime scene?\""
+        )
+        return self.llm.invoke(question_prompt)

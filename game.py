@@ -2,7 +2,6 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
 from ai_bot import AIBot
-from questions import get_random_question
 
 class DetectiveGame:
     def __init__(self):
@@ -45,13 +44,13 @@ class DetectiveGame:
     def ask_question(self):
         self.console.print("[bold blue]Question Type:[/bold blue]")
         self.console.print("1. Type my own")
-        self.console.print("2. Random")
+        self.console.print("2. AI-generated")
         choice = input("Enter your choice (1/2): ").strip()
         
         if choice == "1":
             user_question = input("Type your question below: ").strip()
         elif choice == "2":
-            user_question = get_random_question()
+            user_question = self.ai_bot.generate_random_question()
         else:
             self.console.print("[bold red]Invalid choice. Please try again.[/bold red]")
             return self.ask_question()
