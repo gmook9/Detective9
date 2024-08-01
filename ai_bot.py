@@ -6,10 +6,8 @@ class QuestionGenerator:
     def __init__(self, ai_bot):
         self.ai_bot = ai_bot
 
-    def generate_random_question(self):
-        case_synopsis = self.ai_bot.generate_synopsis()
-
-        # Define a constrained prompt for generating a relevant question
+    def generate_random_question(self, case_synopsis):
+        # Use the provided case synopsis instead of generating a new one
         question_prompt = (
             f"You are a detective. Below is a case synopsis:\n\n"
             f"'{case_synopsis}'\n\n"
@@ -33,20 +31,21 @@ class AIBot:
         return self.llm.invoke(self.prompt)
 
     def respond(self, question):
-        self.conversation_history.append(f"Question: {question}") # Add question to convo history
+        self.conversation_history.append(f"Question: {question}")  # Add question to convo history
         context = "\n".join(self.conversation_history)
         response_prompt = (
             f"Role: {self.role}. You are being questioned. "
             f"Here is the context so far:\n{context}\n\n"
             f"Now respond to the latest question: {question}"
         )
-        response = self.llm.invoke(response_prompt) # Get AI Response
-        self.conversation_history.append(f"Response: {response}") # Add response to convo history
+        response = self.llm.invoke(response_prompt)  # Get AI Response
+        self.conversation_history.append(f"Response: {response}")  # Add response to convo history
         
         return response
 
     def is_guilty(self):
         return self.role == "guilty"
 
-    def generate_random_question(self):
-        return self.question_generator.generate_random_question()
+    # Modify this method to accept synopsis as an argument
+    def generate_random_question(self, case_synopsis):
+        return self.question_generator.generate_random_question(case_synopsis)
