@@ -25,6 +25,6 @@ Tutorial: https://www.youtube.com/watch?v=Asleok-Snfs
 ## Startup
 The command `ollama run llama3` initializes and runs the Llama 3 model locally using the Ollama platform. Without this it will not generate AI responses.
 
-Run the command `python main.py` to start the game.
+Run the command `python startGame.py` to start the game.
 
 
