@@ -1,4 +1,8 @@
-# Detective Game
+<p align="center">
+  <img src="https://i.ibb.co/7gNqBFY/9.jpg" alt="Detective 9 Cover Art" width="600"/>
+</p>
+
+# Detective 9 Text Based Game
 
 ## Overview
 Detective Game is an interactive text-based game where you play the role of a detective. This sample is meant to show of Llama 3 from Meta running locally. The AI bot that is running on Llama 3 via Ollama assumes a random role related to a crime scenario. Your goal is to determine whether the AI bot is innocent or guilty through a series of questions.
