@@ -9,12 +9,11 @@ class QuestionGenerator:
     def generate_random_question(self, case_synopsis):
         # Use the provided case synopsis instead of generating a new one
         question_prompt = (
-            f"You are a detective. Below is a case synopsis:\n\n"
+            f"You are playing the role of a detective in a text-based detective game. Below is a fictional case synopsis:\n\n"
             f"'{case_synopsis}'\n\n"
-            f"Your task is to generate one specific question related only to the details mentioned in the case synopsis above. "
-            f"The question must directly reference people, events, locations, or objects mentioned. "
-            f"Do not introduce any new characters, locations, or events. "
-            f"Only ask about what is described in the synopsis.\n"
+            f"Your task is to generate a question that is appropriate for this scenario. "
+            f"Remember, this is a fictional game setting, so avoid any references to real-life guidance or advice. "
+            f"The question should relate only to the details provided in the synopsis and should aim to uncover more information about the case.\n"
             f"Please provide only the question."
         )
         return self.ai_bot.llm.invoke(question_prompt)
@@ -36,7 +35,7 @@ class AIBot:
         response_prompt = (
             f"Role: {self.role}. You are being questioned. "
             f"Here is the context so far:\n{context}\n\n"
-            f"Now respond to the latest question: {question}"
+            f"Now respond to the latest question: {question}. Only response in 1-2 setnences."
         )
         response = self.llm.invoke(response_prompt)  # Get AI Response
         self.conversation_history.append(f"Response: {response}")  # Add response to convo history
