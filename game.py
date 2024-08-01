@@ -12,8 +12,14 @@ class DetectiveGame:
         self.exit_game = False  # Flag to track if the game is exited
 
     def start(self):
+        # Welcome message
         self.console.print("[bold green]Welcome, Detective![/bold green]")
         self.console.print()  # Add space
+        self.console.print("[bold yellow]Loading, please wait...[/bold yellow]")
+
+        # Add space before the next section
+        self.console.print()
+        
         synopsis = self.ai_bot.generate_synopsis()
         self.console.print(Panel(synopsis, title="Case Synopsis"))
         self.console.print()  # Add space
