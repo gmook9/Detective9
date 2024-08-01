@@ -44,7 +44,7 @@ class DetectiveGame:
         self.console.print("2. Make a final decision")
         self.console.print("3. Exit")
         self.console.print()  # Add space
-        choice = input("Enter your choice (1/2/3): ").strip()
+        choice = self.console.input("[bold yellow]Enter your choice (1/2/3): [/bold yellow]").strip()
         if choice == "1":
             return "Ask a question"
         elif choice == "2":
@@ -57,16 +57,17 @@ class DetectiveGame:
             return self.select_action()
 
     def ask_question(self):
-        self.console.print("[bold blue]Question Type:[/bold blue]")
-        self.console.print("1. Type my own")
-        self.console.print("2. Random")
+        self.console.print()  # Add a blank line for spacing
+        self.console.print("[bold magenta]Question Type:[/bold magenta]")  # Changed color to magenta
+        self.console.print("1. Random")
+        self.console.print("2. Type my own")
         self.console.print()  # Add space
-        choice = input("Enter your choice (1/2): ").strip()
+        choice = self.console.input("[bold yellow]Enter your choice (1/2): [/bold yellow]").strip()
         
         if choice == "1":
-            user_question = input("Type your question below: ").strip()
-        elif choice == "2":
             user_question = self.ai_bot.generate_random_question()
+        elif choice == "2":
+            user_question = self.console.input("Type your question below: ").strip()
         else:
             self.console.print("[bold red]Invalid choice. Please try again.[/bold red]")
             self.console.print()  # Add space
@@ -79,12 +80,13 @@ class DetectiveGame:
         self.console.print(Panel(response, title=f"Response [{self.questions_asked}/{self.max_questions}]"))
         self.console.print()  # Add space
 
+
     def make_final_decision(self):
         self.console.print("[bold blue]Final Decision:[/bold blue]")
         self.console.print("1. Release")
         self.console.print("2. Throw behind bars")
         self.console.print()  # Add space
-        choice = input("Enter your choice (1/2): ").strip()
+        choice = self.console.input("[bold yellow]Enter your choice (1/2): [/bold yellow]").strip()
         
         if choice == "1":
             decision = "Release"
@@ -98,8 +100,9 @@ class DetectiveGame:
         self.console.print()  # Add space
         if self.ai_bot.is_guilty() and decision == "Throw behind bars":
             self.console.print("[bold green]Correct! The suspect was guilty.[/bold green]")
-        elif not self.ai_bot.is_guilty() and decision == "Release":
+        elif not self.ai_bot.is_guilty() and decision == "Release":  # Fix the comparison
             self.console.print("[bold green]Correct! The suspect was innocent.[/bold green]")
         else:
             self.console.print("[bold red]Wrong decision! You lost.[/bold red]")
         exit()
+

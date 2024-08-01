@@ -1,23 +1,23 @@
 from random import choice
 from langchain_community.llms import Ollama
 
+# TO-DO FIX THIS
 class QuestionGenerator:
     def __init__(self, ai_bot):
         self.ai_bot = ai_bot
 
     def generate_random_question(self):
+        case_synopsis = self.ai_bot.generate_synopsis()
+
+        # Define a constrained prompt for generating a relevant question
         question_prompt = (
-            f"Based on the following case synopsis:\n\n"
-            f"'{self.ai_bot.generate_synopsis()}'\n\n"
-            f"As a detective, generate a detective-style question related to this crime investigation. "
-            f"Do not start with (Here's one:) and do not end with any notes. Just the question. Keep it 1-2 sentences."
-            f"\nRole: {self.ai_bot.role}\n"
-            f"Similar to these examples: "
-            "\"Where were you on the night of the crime?\", "
-            "\"Do you have an alibi?\", "
-            "\"What did you notice was wrong about the man?\", "
-            "\"Can you identify their face if you saw them?\", "
-            "\"Why were you near the crime scene?\""
+            f"You are a detective. Below is a case synopsis:\n\n"
+            f"'{case_synopsis}'\n\n"
+            f"Your task is to generate one specific question related only to the details mentioned in the case synopsis above. "
+            f"The question must directly reference people, events, locations, or objects mentioned. "
+            f"Do not introduce any new characters, locations, or events. "
+            f"Only ask about what is described in the synopsis.\n"
+            f"Please provide only the question."
         )
         return self.ai_bot.llm.invoke(question_prompt)
 
