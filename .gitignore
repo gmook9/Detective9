@@ -1,3 +1,20 @@
+# Virtual Environment
 venv/
 *.env
+
+# Python Bytecode
 __pycache__/
+*.pyc
+
+# PyInstaller Build Files
+/build/
+*.spec
+
+# Ignore everything in dist except the .exe file
+dist/*
+!dist/*.exe
+
+# Logs and OS-specific files
+*.log
+.DS_Store
+Thumbs.db

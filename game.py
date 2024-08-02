@@ -55,11 +55,25 @@ class DetectiveGame:
         self.console.print("1. Random")
         self.console.print("2. Type my own\n")
         choice = self.console.input("[bold yellow]Enter your choice (1/2): [/bold yellow]").strip()
-        
+
         if choice == "1":
             user_question = self.ai_bot.generate_random_question(self.synopsis)  # Pass the stored synopsis
         elif choice == "2":
             user_question = self.console.input("Type your question below: ").strip()
+            
+            # Get the context from the conversation history
+            context = "\n".join([f"Question: {q}\nResponse: {r}" for q, r in self.ai_bot.conversation_history])
+            
+            # Create a prompt for AI to respond considering the context
+            response_prompt = (
+                f"Role: {self.ai_bot.role}. You are being questioned. It is a text-based detective game. "
+                f"You know that you are {'guilty' if self.ai_bot.is_guilty() else 'innocent'}, but try not to give that away directly in your responses. "
+                f"Here is the context so far:\n{context}\n\n"
+                f"Now respond to the latest question: {user_question}. Only respond in 1-2 sentences."
+            )
+            response = self.ai_bot.llm.invoke(response_prompt)  # Get AI Response
+            self.ai_bot.conversation_history.append((user_question, response))  # Add the user question and AI response to convo history
+            
         else:
             self.console.print("[bold red]Invalid choice. Please try again.[/bold red]\n")
             return self.ask_question()
@@ -67,9 +81,10 @@ class DetectiveGame:
         self.questions_asked += 1
         self.console.print("\n")
         self.console.print(Text(f"Question {self.questions_asked}: {user_question}", style="bold red"))
-        response = self.ai_bot.respond(user_question)
+        response = self.ai_bot.respond(user_question) if choice == "1" else response
         self.console.print(Panel(response, title=f"Response [{self.questions_asked}/{self.max_questions}]"))
         self.console.print("\n")
+
 
     def make_final_decision(self):
         self.console.print("\n[bold bright_magenta]Final Decision:[/bold bright_magenta]")
