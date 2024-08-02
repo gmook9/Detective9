@@ -67,6 +67,7 @@ class DetectiveGame:
             # Create a prompt for AI to respond considering the context
             response_prompt = (
                 f"Role: {self.ai_bot.role}. You are being questioned. It is a text-based detective game. "
+                f"You know that you are {'guilty' if self.ai_bot.is_guilty() else 'innocent'}, but try not to give that away directly in your responses. "
                 f"Here is the context so far:\n{context}\n\n"
                 f"Now respond to the latest question: {user_question}. Only respond in 1-2 sentences."
             )
