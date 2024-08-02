@@ -12,11 +12,16 @@ Detective Game is an interactive text-based game where you play the role of a de
 - **Ollama**: Platform for running Llama 3 locally.
 - **Rich**: Library for creating beautiful terminal outputs.
 
-## Requirements
-- Llama 3 model files (from Ollama)
-- `python-dotenv` for environment variable management
-- `rich` for terminal UI
-- `langchain_community` for Llama 3 integration
+### Requirements for Running the Source Code:
+- **Llama 3 model files**: Required to generate AI responses (download from Ollama).
+- **Python Libraries**:
+  - `python-dotenv`: For environment variable management.
+  - `rich`: For terminal UI.
+  - `langchain_community`: For Llama 3 integration.
+  
+  These can be installed by running:
+  ```bash
+  pip install -r requirements.txt
 
 ## Ollama Download
 Download: https://ollama.com/download  
