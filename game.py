@@ -1,4 +1,6 @@
 import os
+import time
+import requests
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
@@ -13,7 +15,26 @@ class DetectiveGame:
         self.exit_game = False  # Flag to track if the game is exited
         self.synopsis = None  # Variable to store the generated synopsis
 
+    def wait_for_api(self, timeout=30):
+        """Wait for the API to be available before starting the game."""
+        self.console.print("[bold yellow]Waiting for the API to be available...[/bold yellow]")
+        start_time = time.time()
+        while time.time() - start_time < timeout:
+            try:
+                response = requests.get(f"{self.ai_bot.api_url}/health")
+                if response.status_code == 200:
+                    self.console.print("[bold green]API is available! Starting the game...[/bold green]")
+                    return
+            except requests.ConnectionError:
+                print(".", end="", flush=True)  # Use the built-in print function
+                time.sleep(1)
+        self.console.print("[bold red]\nAPI is not available. Exiting.[/bold red]")
+        exit(1)
+
     def start(self):
+        # Wait for the API to be ready
+        self.wait_for_api()
+
         # Welcome message
         self.console.print("[bold green]Welcome, Detective![/bold green]\n")
         self.console.print("[bold yellow]Loading, please wait...[/bold yellow]\n")

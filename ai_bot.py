@@ -39,7 +39,7 @@ class QuestionGenerator:
 
 class AIBot:
     def __init__(self):
-        self.api_url = os.getenv("FLASK_API_URL", "http://localhost:5000")  # Default
+        self.api_url = os.getenv("FLASK_API_URL", "http://api:5000")  # Use 'api' as the hostname
         self.role = choice(["guilty", "innocent"])
         self.prompt = "Generate a random crime scenario for a detective game in 3-5 sentences. Describe a situation that has just happened. At the end of your response, specify your role as the person being interviewed at the police station. You might be a witness, bystander, or actively involved, and you could be innocent or guilty. For example: (Interviewee: Wife). Also do not put anything like (Here's a random crime scenario:) in it."
         self.conversation_history = []
