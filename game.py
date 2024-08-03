@@ -1,3 +1,4 @@
+import os
 from rich.console import Console
 from rich.panel import Panel
 from rich.text import Text
@@ -39,7 +40,15 @@ class DetectiveGame:
         self.console.print("1. Ask a question")
         self.console.print("2. Make a final decision")
         self.console.print("3. Exit\n")
+        
+        # Check for environment variable
+        choice = os.getenv("DETECTIVE_ACTION", None)
+        if choice:
+            return choice.strip()
+        
+        # Fallback to input if no env variable is set
         choice = self.console.input("[bold yellow]Enter your choice (1/2/3): [/bold yellow]").strip()
+        
         if choice == "1":
             return "Ask a question"
         elif choice == "2":
@@ -60,28 +69,22 @@ class DetectiveGame:
             user_question = self.ai_bot.generate_random_question(self.synopsis)  # Pass the stored synopsis
         elif choice == "2":
             user_question = self.console.input("Type your question below: ").strip()
-            
-            # Get the context from the conversation history
-            context = "\n".join([f"Question: {q}\nResponse: {r}" for q, r in self.ai_bot.conversation_history])
-            
-            # Create a prompt for AI to respond considering the context
-            response_prompt = (
-                f"Role: {self.ai_bot.role}. You are being questioned. It is a text-based detective game. "
-                f"You know that you are {'guilty' if self.ai_bot.is_guilty() else 'innocent'}, but try not to give that away directly in your responses. "
-                f"Here is the context so far:\n{context}\n\n"
-                f"Now respond to the latest question: {user_question}. Only respond in 1-2 sentences."
-            )
-            response = self.ai_bot.llm.invoke(response_prompt)  # Get AI Response
-            self.ai_bot.conversation_history.append((user_question, response))  # Add the user question and AI response to convo history
-            
+
         else:
             self.console.print("[bold red]Invalid choice. Please try again.[/bold red]\n")
             return self.ask_question()
 
+        # Create a prompt for AI to respond considering the context
+        context = f"Case Synopsis:\n{self.synopsis}\n\n"
+        context += "\n".join([f"Question: {q}\nResponse: {r}" for q, r in self.ai_bot.conversation_history])
+        context += f"\n\nNew Question: {user_question}\n\nPlease respond in 1-2 sentences."
+
+        response = self.ai_bot.invoke_llama(context)  # Use the correct method to get AI Response
+        self.ai_bot.conversation_history.append((user_question, response))  # Add the user question and AI response to convo history
+
         self.questions_asked += 1
         self.console.print("\n")
         self.console.print(Text(f"Question {self.questions_asked}: {user_question}", style="bold red"))
-        response = self.ai_bot.respond(user_question) if choice == "1" else response
         self.console.print(Panel(response, title=f"Response [{self.questions_asked}/{self.max_questions}]"))
         self.console.print("\n")
 
