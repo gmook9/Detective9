@@ -2,12 +2,12 @@ version: '3'
 services:
   api:
     build: .
-    command: python api.py
     ports:
       - "5000:5000"
-  
-  game:
-    build: .
-    command: python startGame.py
     depends_on:
-      - api
+      - ollama
+
+  ollama:
+    image: ollama/ollama:latest  # Replace with the correct image
+    ports:
+      - "11434:11434"

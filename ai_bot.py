@@ -36,21 +36,25 @@ class QuestionGenerator:
         self.asked_questions.add(new_question)
         return new_question
 
-
 class AIBot:
     def __init__(self):
-        self.api_url = os.getenv("FLASK_API_URL", "http://api:5000")  # Use 'api' as the hostname
+        # self.api_url = os.getenv("FLASK_API_URL", "http://api:5000")  # Use 'api' as the hostname
+        self.api_url = "http://127.0.0.1:5000"
         self.role = choice(["guilty", "innocent"])
         self.prompt = "Generate a random crime scenario for a detective game in 3-5 sentences. Describe a situation that has just happened. At the end of your response, specify your role as the person being interviewed at the police station. You might be a witness, bystander, or actively involved, and you could be innocent or guilty. For example: (Interviewee: Wife). Also do not put anything like (Here's a random crime scenario:) in it."
         self.conversation_history = []
         self.question_generator = QuestionGenerator(self)  # Initialize QuestionGenerator
 
     def invoke_llama(self, prompt):
-        response = requests.post(f"{self.api_url}/generate", json={"prompt": prompt})
-        if response.status_code == 200:
-            return response.json().get("response", "").strip()
-        else:
-            raise Exception(f"Failed to invoke Llama model: {response.status_code} - {response.text}")
+        try:
+            response = requests.post(f"{self.api_url}/generate", json={"prompt": prompt})
+            if response.status_code == 200:
+                return response.json().get("response", "").strip()
+            else:
+                raise Exception(f"Failed to invoke Llama model: {response.status_code} - {response.text}")
+        except requests.ConnectionError as e:
+            print(f"Connection error: {e}")
+            return "Error: Failed to connect to the AI model."
 
     def generate_synopsis(self):
         return self.invoke_llama(self.prompt)
