@@ -45,6 +45,7 @@ class DetectiveGame:
         elif choice == "2":
             return "Make a final decision"
         elif choice == "3":
+            self.console.print("\n[bold red]Exiting...[/bold red]\n")
             return "Exit"
         else:
             self.console.print("[bold red]Invalid choice. Please try again.[/bold red]\n")
